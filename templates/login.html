@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DermaCare AI - Login & Register</title>
+
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    <script src="https://kit.fontawesome.com/473e39d1f1.js" crossorigin="anonymous"></script>  
+
+    <!-- App Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- jQuery -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body style="background: linear-gradient(to right, #ebe5dc, #c59557); display: flex; justify-content: center; align-items: center; height: 100vh;">
+
+    <div class="login-container">
+        <div class="form-container">
+            <h1 class="website-title">DermaCare AI</h1>
+            <p class="slogan">Your Personal AI-Based Dermatologist</p>
+
+            <!-- Show error or success messages -->
+            {% if error %}
+              <p class="error" id="error-message">{{ error }}</p>
+            {% endif %}
+            {% if forgot_error %}
+              <p class="error" id="forgot-error-message">{{ forgot_error }}</p>
+            {% endif %}
+            {% if success_forgot %}
+              <p class="success" id="success-forgot-message">{{ success_forgot }}</p>
+            {% endif %}
+            {% if success_register %}
+              <p class="success" id="success-register-message">{{ success_register }}</p>
+            {% endif %}
+
+            <!-- Login Form -->
+            <form id="login-form" action="/" method="POST" autocomplete="off">
+                <h2>Login</h2>
+                <div class="input-group">
+                    <i class="fa-regular fa-user"></i>
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" placeholder="Password" required id="passwordLogin">
+                    <i class="fas fa-eye eye-icon toggle-password" data-target="passwordLogin"></i>
+                </div>
+                <p class="forgot-password">
+                    <a href="#" id="show-forgot">Forgot password?</a>
+                </p>
+                <button type="submit" class="submit-btn">Login</button>
+                <p class="toggle-text">
+                    Don't have an account? <a href="#" id="show-register">Create your account</a>
+                </p>
+            </form>
+
+            <!-- Registration Form -->
+            <form id="register-form" action="/register" method="POST" autocomplete="off" style="display: none;">
+                <h2>Sign Up</h2>
+                <div class="input-group">
+                    <i class="fa-regular fa-user"></i>
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-regular fa-envelope"></i>
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" placeholder="Password" required id="passwordRegister">
+                    <i class="fas fa-eye eye-icon toggle-password" data-target="passwordRegister"></i>
+                </div>
+                <button type="submit" class="submit-btn">Register</button>
+                <p class="toggle-text">
+                    Already have an account? <a href="#" id="show-login">Login</a>
+                </p>
+            </form>
+
+            <!-- Forgot Password Form -->
+            <form id="forgot-form" action="/forgot_password" method="POST" autocomplete="off" style="display: none;">
+                <h2>Reset Password</h2>
+                <div class="input-group">
+                    <i class="fa-regular fa-envelope"></i>
+                    <input type="email" name="email" placeholder="Enter your registered email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="new_password" placeholder="New Password" required id="passwordForgot">
+                    <i class="fas fa-eye eye-icon toggle-password" data-target="passwordForgot"></i>
+                </div>
+                <button type="submit" class="submit-btn">Change Password</button>
+                <p class="toggle-text">
+                    <a href="#" id="show-login-forgot">Back to Login</a>
+                </p>
+            </form>
+        </div>
+
+        <div class="branding-container">
+            <div class="overlay"></div>
+            <div class="branding-text">
+                <h2>DermaCare AI</h2>
+                <p>Bringing AI-powered dermatology to your fingertips.</p>
+            </div>
+            <img src="{{ url_for('static', filename='images/dermacare-banner.jpg') }}" alt="DermaCare AI">
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

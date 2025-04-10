@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DermaCare AI - Skin Diseases Identification</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <!-- Fancy Font (Google Fonts) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=3">
+    
+    <!-- jQuery + Bootstrap JS -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+    
+    <!-- WOW.js for animations -->
+    <script src="https://cdn.jsdelivr.net/npm/wowjs@1.1.3/dist/wow.min.js"></script>
+    <script>
+        new WOW().init();
+    </script>
+    
+
+    <script src="{{ url_for('static', filename='script.js') }}?v=3" defer></script>
+</head>
+
+<body style="background-color: #fff;">
+
+    <nav class="oval-nav d-flex align-items-center">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div class="left-content d-flex align-items-center">
+                <h1 class="brand-title">DermaCare AI</h1>
+            </div>
+            <div class="right-content d-flex align-items-center">
+                <ul class="nav-links d-flex">
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#skincare-tips">SkinCareTips</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+                <a href="{{ url_for('logout') }}" class="logout-link ml-4">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ======= HERO CARD (Full-width, starts at the top) ======= -->
+    <div class="hero-card wow animate__animated animate__fadeInDown" id="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-text container">
+            <h2 class="hero-title">DERMACARE AI</h2>
+            <p class="hero-desc">
+                DermaCare AI empowers you with cutting-edge, AI-driven dermatological insights, <br> bringing expert skin care right to your fingertips. 
+                Experience the future of <br> personalized diagnosis and treatment recommendations, revolutionizing how you care for your skin.
+            </p>
+        </div>
+    </div>
+
+    <div class="main-content container"> 
+        <div class="prediction-card card wow animate__animated animate__fadeInUp">
+            <div class="card-body">
+                <h2 class="card-title">Upload Image for Skin Disease Identification</h2>
+                <p class="card-text">
+                    Please upload a clear image of the affected skin area below. We will analyze it and predict the most likely condition.
+                </p>
+                
+                <form id="upload-file" enctype="multipart/form-data">
+                    <div class="form-group text-center">
+                        <label for="imageUpload" class="upload-label">Choose an image file:</label>
+                        <input type="file" class="form-control-file" name="image" id="imageUpload" accept=".png, .jpg, .jpeg">
+                    </div>
+
+                    <div class="image-section text-center mt-3">
+                        <div id="imagePreview"></div>
+                    </div>
+
+                 
+                    <div class="form-check text-center mt-3">
+                        <input type="checkbox" class="form-check-input" id="disclaimerCheck" required>
+                        <label class="form-check-label" for="disclaimerCheck" style="color:#704214;">
+                            I understand this is a preliminary AI tool and not a professional diagnosis.
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-predict mt-3">Predict!</button>
+
+                    <div class="loader" id="prediction-loader"></div>
+                    <h3 style="white-space: pre-wrap; margin-top: 20px; text-align: left; font-size:14px;">
+                        <span id="result" ></span>
+                    </h3>
+                </form>
+            </div>
+        </div>
+
+    
+        <div id="feedback-container" style="display:none;">
+            <div class="card feedback-card wow animate__animated animate__fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+                <div class="card-body">
+                    <h3 class="card-title">Thank you for using DermaCare AI! Your feedback will help us improve.</h3>
+                    <p class="card-text">Was this prediction helpful?</p>
+                    <form id="feedback-form" method="POST">
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="was_correct" id="helpfulYes" value="yes" required>
+                                <label class="form-check-label" for="helpfulYes">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="was_correct" id="helpfulNo" value="no" required>
+                                <label class="form-check-label" for="helpfulNo">No</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Rate your experience:</label>
+                            <div class="star-rating">
+                                <input type="radio" id="star5" name="rating" value="5" required /><label for="star5" title="5 stars">☆</label>
+                                <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars">☆</label>
+                                <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars">☆</label>
+                                <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars">☆</label>
+                                <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star">☆</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="feedbackComment">Additional Comments (optional):</label>
+                            <textarea class="form-control" id="feedbackComment" name="comment" rows="3" placeholder="Enter your suggestions or comments"></textarea>
+                        </div>
+                        <button type="submit" class="btn-predict feedback-submit">Submit Feedback</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======= ABOUT SECTION ======= -->
+        <section class="about-section wow animate__animated animate__fadeInUp" id="about" data-wow-duration="1s" data-wow-delay="0.5s">
+            <h2 class="about-title">About DermaCare AI</h2>
+            <div class="about-content row">
+                <div class="about-text col-md-6">
+                    <p>
+                        Dermacare AI is a cutting-edge dermatology assistant powered by artificial intelligence. 
+                        Our system is trained on extensive datasets such as DermNet and ISIC, ensuring fast and reliable preliminary diagnosis of common skin conditions.
+                    </p>
+                    <p>
+                        Our mission is to empower individuals with early insights into their skin health, guiding them to seek professional advice when necessary.
+                        With a focus on accuracy and speed, Dermacare AI is revolutionizing the way we approach skin care.
+                    </p>
+                    <p>
+                        We believe that technology and medicine can work hand-in-hand to improve lives, and your feedback helps us continuously improve our service.
+                    </p>
+                    <p>This application supports preliminary identification. For a professional diagnosis, please consult a certified dermatologist.</p>
+                </div>
+                <div class="about-image col-md-6 text-center">
+                    <img src="{{ url_for('static', filename='images/about-image.jpg') }}" alt="Dermacare AI" class="img-fluid">
+                </div>
+            </div>
+        </section>
+
+         <!-- ======= ADDITIONAL ABOUT CARDS (Optional) ======= -->
+         <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card about-card">
+                    <img src="{{ url_for('static', filename='images/aboutcard-image1.jpg') }}" class="card-img-top" alt="Precision AI">
+                    <div class="about-card-body">
+                        <h5 class="about-card-title">Precision AI</h5>
+                        <p class="about-card-text">
+                            Our AI model is trained on thousands of images, providing top-tier accuracy for common skin conditions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card about-card">
+                    <img src="{{ url_for('static', filename='images/aboutcard-image2.jpg') }}" class="card-img-top" alt="Compassionate Care">
+                    <div class="about-card-body">
+                        <h5 class="about-card-title">Compassionate Care</h5>
+                        <p class="about-card-text">
+                            We understand how worrying skin issues can be. Our platform offers quick insights and guides you to proper care.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card about-card">
+                    <img src="{{ url_for('static', filename='images/aboutcard-image3.png') }}" class="card-img-top" alt="Continuous Improvement">
+                    <div class="about-card-body">
+                        <h5 class="about-card-title">Continuous Improvement</h5>
+                        <p class="about-card-text">
+                            We continuously enhance our AI model. Your feedback plays a crucial role in improving our predictions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       <!-- ======= SKIN CARE TIPS SECTION (Carousel) ======= -->
+       <section class="skin-care-tips-section wow animate__animated animate__fadeInUp" id="skincare-tips" data-wow-duration="1s" data-wow-delay="0.5s">
+        <h2 class="skin-care-tips-title text-center">Skin Care Tips</h2>
+        <div id="skinCareCarousel" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#skinCareCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#skinCareCarousel" data-slide-to="1"></li>
+                <li data-target="#skinCareCarousel" data-slide-to="2"></li>
+                <li data-target="#skinCareCarousel" data-slide-to="3"></li>
+                <li data-target="#skinCareCarousel" data-slide-to="4"></li>
+                <li data-target="#skinCareCarousel" data-slide-to="5"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{{ url_for('static', filename='images/skincare2.jpg') }}" class="d-block w-100" alt="Skin Care Tip 2">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Cleanse Regularly</h5>
+                        <p>Wash your face twice a day with a gentle cleanser to keep your skin clean.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='images/skincare1.jpg') }}" class="d-block w-100" alt="Skin Care Tip 1">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Stay Hydrated</h5>
+                        <p>Drink plenty of water to keep your skin moisturized and glowing.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='images/skincare3.jpg') }}" class="d-block w-100" alt="Skin Care Tip 3">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Moisturize Daily</h5>
+                        <p>Use a moisturizer suited to your skin type to keep your skin soft and supple.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='images/skincare4.jpg') }}" class="d-block w-100" alt="Skin Care Tip 4">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Wear Sunscreen</h5>
+                        <p>Always apply sunscreen to protect your skin from harmful UV rays.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='images/skincare5.jpg') }}" class="d-block w-100" alt="Skin Care Tip 5">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Eat a Balanced Diet</h5>
+                        <p>A healthy diet rich in vitamins can improve your skin's appearance.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ url_for('static', filename='images/skincare6.jpg') }}" class="d-block w-100" alt="Skin Care Tip 6">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Get Enough Sleep</h5>
+                        <p>Adequate sleep helps your skin repair and rejuvenate.</p>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#skinCareCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#skinCareCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </section>
+
+        <!-- ======= FAQ SECTION ======= -->
+        <section class="faq-section wow animate__animated animate__fadeInUp" id="faq" data-wow-duration="1s" data-wow-delay="0.5s">
+            <h2 class="faq-title text-center">Frequently Asked Questions</h2>
+            <div class="accordion" id="faqAccordion">
+                <!-- FAQ Item 1 -->
+                <div class="card faq-card">
+                    <div class="card-header" id="faqHeading1">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link faq-question" type="button" data-toggle="collapse" data-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1">
+                                Can I rely on this app?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="faqCollapse1" class="collapse" aria-labelledby="faqHeading1" data-parent="#faqAccordion">
+                        <div class="card-body faq-answer">
+                            Dermacare AI is designed to provide preliminary insights and should not replace professional medical advice.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ Item 2 -->
+                <div class="card faq-card">
+                    <div class="card-header" id="faqHeading2">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link faq-question collapsed" type="button" data-toggle="collapse" data-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+                                How is my data handled?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="faqCollapse2" class="collapse" aria-labelledby="faqHeading2" data-parent="#faqAccordion">
+                        <div class="card-body faq-answer">
+                            The images you upload are discarded immediately after processing, and your data is not shared with any third parties.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ Item 3 -->
+                <div class="card faq-card">
+                    <div class="card-header" id="faqHeading3">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link faq-question collapsed" type="button" data-toggle="collapse" data-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+                                What skin conditions does the app identify?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="faqCollapse3" class="collapse" aria-labelledby="faqHeading3" data-parent="#faqAccordion">
+                        <div class="card-body faq-answer">
+                            Our system can identify several conditions including Acne, Melanoma, Actinic Keratosis, Ring worm, Eczema as well as recognize Healthy Skin.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ Item 4 -->
+                <div class="card faq-card">
+                    <div class="card-header" id="faqHeading4">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link faq-question collapsed" type="button" data-toggle="collapse" data-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4">
+                                How accurate are the predictions?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="faqCollapse4" class="collapse" aria-labelledby="faqHeading4" data-parent="#faqAccordion">
+                        <div class="card-body faq-answer">
+                            Our AI model is trained on extensive datasets and offers high accuracy for preliminary identification. However, a professional diagnosis is recommended.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ Item 5 -->
+                <div class="card faq-card">
+                    <div class="card-header" id="faqHeading5">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link faq-question collapsed" type="button" data-toggle="collapse" data-target="#faqCollapse5" aria-expanded="false" aria-controls="faqCollapse5">
+                                What should I do if the prediction indicates a serious condition?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="faqCollapse5" class="collapse" aria-labelledby="faqHeading5" data-parent="#faqAccordion">
+                        <div class="card-body faq-answer">
+                            If the prediction indicates a serious condition, we strongly recommend that you consult a certified dermatologist immediately.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ Item 6 -->
+                <div class="card faq-card">
+                    <div class="card-header" id="faqHeading6">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link faq-question collapsed" type="button" data-toggle="collapse" data-target="#faqCollapse6" aria-expanded="false" aria-controls="faqCollapse6">
+                                How can I improve my skin health using this tool?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="faqCollapse6" class="collapse" aria-labelledby="faqHeading6" data-parent="#faqAccordion">
+                        <div class="card-body faq-answer">
+                            Along with predictions, our platform offers skin care tips and recommendations to help maintain healthy skin. Always follow professional advice for any treatment.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ Item 7 -->
+                <div class="card faq-card">
+                    <div class="card-header" id="faqHeading7">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link faq-question collapsed" type="button" data-toggle="collapse" data-target="#faqCollapse7" aria-expanded="false" aria-controls="faqCollapse7">
+                                Do I need to provide personal information for predictions?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="faqCollapse7" class="collapse" aria-labelledby="faqHeading7" data-parent="#faqAccordion">
+                        <div class="card-body faq-answer">
+                            No. We only require an image for prediction. Personal information is only used for account management and feedback purposes.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ Item 8 -->
+                <div class="card faq-card">
+                    <div class="card-header" id="faqHeading8">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link faq-question collapsed" type="button" data-toggle="collapse" data-target="#faqCollapse8" aria-expanded="false" aria-controls="faqCollapse8">
+                                How often is the AI model updated?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="faqCollapse8" class="collapse" aria-labelledby="faqHeading8" data-parent="#faqAccordion">
+                        <div class="card-body faq-answer">
+                            We continuously update our model with new data and user feedback to improve its accuracy and performance.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        
+    </div> <!-- End of main-content container -->
+    <!-- ======= FOOTER ======= -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p>DermaCare AI &copy; 2025. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
+
