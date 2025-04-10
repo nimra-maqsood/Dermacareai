@@ -1,0 +1,579 @@
+
+/* =============================
+   GLOBAL / SHARED STYLES
+============================= */
+
+/* Force the index page body to be white */
+body {
+    background: #fff;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container for page content */
+.main-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: block;
+    padding: 20px;
+    margin-top: 0;
+}
+
+/* =============================
+   OVAL NAVBAR
+============================= */
+.oval-nav {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: #fff;
+    border-bottom-left-radius: 60px;
+    border-bottom-right-radius: 60px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+}
+.oval-nav .container-fluid {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.brand-title {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: #000;
+    margin: 0;
+}
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+.nav-links li {
+    margin-left: 20px;
+}
+.nav-links li a {
+    color: #444 !important;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+.nav-links li a:hover {
+    color: #704214 !important;
+}
+.logout-link {
+    border: 2px solid #000;
+    color: #000 !important;
+    font-size: 14px;
+    border-radius: 20px;
+    padding: 6px 12px;
+    margin-left: 10px;
+    text-decoration: none !important;
+    transition: 0.3s;
+}
+.logout-link:hover {
+    background: #000;
+    color: #fff !important;
+}
+
+/* =============================
+   HERO CARD
+============================= */
+.hero-card {
+    width: 100%;
+    position: relative;
+    height: 450px; /* Adjust height as needed */
+    background: url("../static/images/hero-card-image.jpg") no-repeat center center / cover;
+    border-radius: 0 0 40px 40px;
+    margin-top: 0;
+    box-shadow: inset 0 -10px 20px rgba(0,0,0,0.05);
+}
+.hero-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    border-radius: 0 0 40px 40px;
+}
+.hero-text {
+    position: relative;
+    min-height: 300px;
+    padding: 80px 0 0 0;
+    color: #fff;
+    z-index: 2;
+}
+.hero-title {
+    font-family: 'Quicksand', sans-serif;
+    margin-top: 100px;
+    font-size: 60px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    color: #fff;
+}
+.hero-desc {
+    color: #eee;
+    font-size: 18px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* Floating design element on the hero card */
+.hero-design {
+    position: absolute;
+    right: 50px;
+    top: 30%;
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    animation: floatAnimation 5s infinite ease-in-out;
+}
+
+
+@keyframes floatAnimation {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0); }
+}
+
+/* =============================
+   PREDICTION CARD
+============================= */
+.prediction-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    padding: 30px;
+    margin-bottom: 40px;
+    text-align: center;
+    max-width: 900px;
+    margin: -50px auto 40px auto; /* Overlaps slightly for a stylish look */
+}
+.prediction-card h2 {
+    font-size: 24px;
+    color: black;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.prediction-card p {
+    color: #704214;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.btn-predict {
+    margin-top: 15px;
+    background: transparent;
+    border: 2px solid #704214;
+    color: #704214;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-predict:hover {
+    background: #704214;
+    color: white;
+}
+.image-section {
+    display: none;
+}
+#result {
+    font-size: 14px;
+    color: #333;
+    text-align: left;
+    white-space: pre-wrap;
+}
+
+/* Loader Spinner */
+.loader {
+    border: 8px solid #ffffff;
+    border-top: 8px solid #a87c4f ;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+/* =============================
+   FEEDBACK CARD
+============================= */
+.feedback-card {
+    background: #daab6e52;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 40px;
+    text-align: left;
+    max-width: 900px;
+    margin: 20px auto;
+}
+.feedback-card h3 {
+    font-size: 22px;
+    color: black;
+    margin-bottom: 15px;
+}
+.feedback-card .card-text {
+    color: black;
+    font-size: 16px;
+}
+
+/* Star Rating Styles */
+.star-rating {
+    direction: rtl;
+    display: inline-block;
+    font-size: 24px;
+}
+.star-rating input[type="radio"] {
+    display: none;
+}
+.star-rating label {
+    color: #0e0d0d;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.star-rating input[type="radio"]:checked ~ label {
+    color: #ffca08;
+}
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffca08;
+}
+/* Style the feedback submit button differently */
+.feedback-submit {
+    background: #f0e8dc; /* A light tone that matches the theme */
+    border: 2px solid #704214;
+    color: #704214;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.feedback-submit:hover {
+    background: #704214;
+    color: #fff;
+}
+
+/* =============================
+   ABOUT SECTION
+============================= */
+.about-section {
+    margin: 20px 0;
+    padding: 40px 0;
+}
+.about-title {
+    text-align: center;
+    font-size: 36px;
+    color: #000;
+    font-family: 'Quicksand', sans-serif;
+    margin-bottom: 30px;
+}
+.about-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+.about-text {
+    flex: 1 1 500px;
+    padding: 20px;
+    font-size: 18px;
+    color: #000;
+    line-height: 1.6;
+}
+.about-image {
+    flex: 1 1 400px;
+    padding: 20px;
+    text-align: center;
+}
+.about-image img {
+    max-width: 100%;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+.about-image img:hover {
+    transform: scale(1.05);
+}
+
+/* =============================
+   ABOUT CARDS (New Styles)
+============================= */
+.about-card {
+    background: #333; /* Dark background for text contrast */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    margin-bottom: 10px;
+}
+.about-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+.about-card-body {
+    padding: 15px;
+    background: #000; /* Dark background */
+}
+.about-card-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff; /* White title */
+    margin-bottom: 10px;
+}
+.about-card-text {
+    font-size: 16px;
+    color: #fff; /* White text */
+}
+
+/* =============================
+   SKIN CARE TIPS SECTION (Carousel)
+============================= */
+.skin-care-tips-section {
+    margin: 40px 0;
+    padding: 40px 0;
+    background: #f7f3e9;
+}
+.skin-care-tips-title {
+    text-align: center;
+    font-size: 36px;
+    color: #704214;
+    font-family: 'Quicksand', sans-serif;
+    margin-bottom: 30px;
+}
+.carousel-item img {
+    height: 400px;
+    object-fit: cover;
+}
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+}
+.carousel-caption h5 {
+    font-size: 24px;
+    color: #fff;
+    font-weight: bold;
+}
+.carousel-caption p {
+    font-size: 16px;
+    color: #fff;
+}
+
+/* =============================
+   FAQ SECTION
+============================= */
+.faq-section {
+    margin: 40px 0;
+    padding: 40px 0;
+    background: #f0e2c0;
+}
+.faq-title {
+    text-align: center;
+    font-size: 36px;
+    color: #704214;
+    font-family: 'Quicksand', sans-serif;
+    margin-bottom: 30px;
+}
+.faq-card {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+}
+.faq-card .card-header {
+    background: #fff;
+    padding: 15px;
+    cursor: pointer;
+}
+.faq-card .faq-question {
+    font-size: 18px;
+    color: #704214;
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+/* Removed .faq-icon styles as icons are no longer used */
+.faq-card .card-body.faq-answer {
+    background: #f0e2c0;
+    color: #333;
+    font-size: 16px;
+    padding: 15px;
+}
+
+
+/* =============================
+   FOOTER
+============================= */
+.footer {
+    width: 100%;
+    background:  #a87c4f;
+    padding: 20px 0;
+    text-align: center;
+
+}
+.footer p {
+    color: #fff;
+    font-size: 16px;
+    margin: 0;
+   
+}
+
+/* =============================
+   LOGIN PAGE STYLES
+============================= */
+.login-container {
+    display: flex;
+    width: 900px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+    margin: auto;
+    
+}
+.form-container {
+    flex: 1;
+    padding: 40px;
+    text-align: center;
+    background: white;
+}
+.website-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #704214;
+    margin-bottom: 5px;
+}
+.slogan {
+    font-size: 14px;
+    color: #a87c4f;
+    margin-bottom: 20px;
+}
+.error {
+    color: red;
+    margin-bottom: 10px;
+}
+.success {
+    color: green;
+    margin-bottom: 10px;
+}
+.input-group {
+    display: flex;
+    align-items: center;
+    border: 2px solid #d3a476;
+    border-radius: 25px;
+    margin: 15px auto;
+    width: 90%;
+    background: transparent;
+    padding: 0 15px;
+}
+.input-group i {
+    font-size: 18px;
+    color: #a87c4f;
+    margin-right: 10px;
+}
+.input-group input {
+    flex: 1;
+    border: none;
+    font-size: 16px;
+    background: transparent;
+    outline: none;
+    padding: 12px 0;
+    color: #000;
+}
+.eye-icon {
+    font-size: 18px;
+    color: #a87c4f;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #704214;
+    background: transparent;
+    color: #704214;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 25px;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+.submit-btn:hover {
+    background: #704214;
+    color: white;
+}
+.forgot-password {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+}
+.forgot-password a,
+.toggle-text a {
+    color: #a87c4f !important;
+    text-decoration: none !important;
+}
+.forgot-password a:hover,
+.toggle-text a:hover {
+    text-decoration: underline !important;
+}
+.toggle-text {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #704214;
+}
+.branding-container {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.branding-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+}
+.branding-text {
+    position: absolute;
+    color: white;
+    text-align: center;
+}
+.branding-text h2 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+.branding-text p {
+    font-size: 16px;
+    opacity: 0.9;
+}
